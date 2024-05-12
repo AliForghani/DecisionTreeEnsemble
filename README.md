@@ -31,7 +31,8 @@ Data=pd.read_csv(r"data/1YearStorage.out", delim_whitespace=True, usecols=['K', 
 
 Data.info()
 ``````
-![alt text](image.png)
+![image](https://github.com/AliForghani/DecisionTreeEnsemble/assets/22843733/a0942502-ab4e-40ec-86b1-80d3e80ba86f)
+
 
 ### Data Cleaning and Preparation
 There is no missing data and all features and target are continuous. So, no data processsing is needed to handle missing data or categorical features. One of the many quality of Decision Trees is that they do not need much data preparation like feature scaling at all. We just need to make a new feature as the ratio of extraction to injection rate. 
@@ -78,7 +79,8 @@ MSESummaryDF=pd.DataFrame(MSESummary, columns=["max_depth","MSE"])
 MSESummaryDF.plot(x="max_depth", y="MSE", kind='line', marker='o', ylabel='MSE')
 
 ```
-![alt text](image-4.png)
+![image](https://github.com/AliForghani/DecisionTreeEnsemble/assets/22843733/ee1e6c3f-47f0-43d3-8ea5-929a1af33200)
+
 
 In addition to limiting the "max_depth", we can also control overfitting using other parameters. This includes 
 The start of MSE fluctuations is a sign of overfitting. Therefore, the best max_depth may be 6.
@@ -89,6 +91,7 @@ BestModel.fit(X,y)
 plot_tree(BestModel, filled=False, fontsize=8, feature_names=X.columns)
 plt.show()
 ```
-![alt text](image-3.png)
+![image](https://github.com/AliForghani/DecisionTreeEnsemble/assets/22843733/f9070565-b7e3-437a-9e0e-eb4c5223e1ea)
+
 
 The "value" in each node is the average target values of samples in the node. The main weakness of DTs is that they are very sensitive to small variations in the training data. To address this weakness, we have to use Random Forest or other Ensemble methods. 
