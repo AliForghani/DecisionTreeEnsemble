@@ -32,22 +32,15 @@ Data.info()
 
 ### Data Cleaning and Preparation
 There is no missing data and all features and target are continuous. So, no data processsing is needed to handle missing data or categorical features. One of the many quality of Decision Trees is that they do not need much data preparation like feature scaling at all. We just need to make a new feature as the ratio of extraction to injection rate. 
-
-DELETEME:Also, we ned to normalize/scale the features to transform the values of them to a common scale, making them comparable and preventing features with larger values from dominating the model training process. We use "Min-Max scaling" method for normalization, which makes all features to be in the range of 0 to 1. 
+ 
 
 ```python
 # perform feature engineering by making a new feature as ratio of extraction rate to injection rate
 Data["EXT_Inj"]=Data['Ext']/Data["Inj"]
 
-# save features and target in X and y variabes after Convert REN values to percentage
+# save features and target in X and y variabes
 X= Data.loc[:,['K', 'Inj', 'Por', 'b', 'CHD', "EXT_Inj", 'DSP']]
 y= Data.loc[:,"REN_3_2"]
-
-#DELETEME apply min-max transformation 
-for feature in X.columns:
-    feature_min, feature_max=X[feature].min(),X[feature].max()
-    X[feature]=(X[feature]-feature_min)/(feature_max-feature_min)
-```
 
 Now, we can begin our ML journey.
 
