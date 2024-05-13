@@ -21,9 +21,8 @@ A dataset comprising 5000 random values within reasonable ranges for these facto
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.tree import DecisionTreeRegressor, plot_tree
+
 from sklearn.metrics import mean_squared_error
-from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 
 # read required columns from the dataset  
@@ -86,6 +85,8 @@ In addition to limiting the "max_depth", we can also control overfitting using o
 The start of MSE fluctuations is a sign of overfitting. Therefore, the best max_depth may be 6.
 
 ```python
+from sklearn.tree import DecisionTreeRegressor, plot_tree
+
 BestModel=DecisionTreeRegressor(max_depth=6)
 BestModel.fit(X,y)
 y_pred=BestModel.predict(X_test)
