@@ -41,7 +41,7 @@ Data["EXT_Inj"]=Data['Ext']/Data["Inj"]
 # save features and target in X and y variabes
 X= Data.loc[:,['K', 'Inj', 'Por', 'b', 'CHD', "EXT_Inj", 'DSP']]
 y= Data.loc[:,"REN_3_2"]
-
+```
 Now, we can begin our ML journey.
 
 ## Decision Tree (DT)
