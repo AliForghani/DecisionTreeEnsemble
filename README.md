@@ -111,7 +111,7 @@ Ensemble methods work best when the predictors are as independent from one anoth
 This ensemble methods use predictors with very algorithm. For example, using DTs, SVD or linear regression in the ensemble and aggregate their results (using average of models as the prediction of the ensemble). A major benefit is that ddifferent models can be trained in parallel.
 
 ### Bagging
-This method uses the same algorithm for all predictors but training them on different random subset of training set (rows) or subset of features (columns). Here, we explore the major hyperparameters of [BaggingRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.BaggingRegressor.html) API of scikit-learn. 
+This method uses the same algorithm for all predictors but training them on different random subset of training set (rows) or subset of features (columns). Again, tarining models can be perform in parallel. Here, we explore the major hyperparameters of [BaggingRegressor](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.BaggingRegressor.html) API of scikit-learn. 
 - estimator: this is the base algorithm for ensemble models. If unspecified, it defaults to DecisionTreeRegressor
 -  n_estimators: The number predictors in the ensemble.
 -  max_samples: The number of samples to draw from X to train each predictor. 
@@ -168,7 +168,63 @@ print(FeatureImpoDF)
 ![image](https://github.com/AliForghani/DecisionTreeEnsemble/assets/22843733/c687e931-cf89-4162-8c34-4eb89630fd2a)
 
 
-Results show that background groundwater grandient (CHD) and Hydraulic conductivity are the most important features for REN prediction. 
+Results show that background groundwater grandient (CHD) and Hydraulic conductivity (K) are the most important features for REN prediction. 
 
 ### Gradient Boosting
+Boosting refers to combining several weaker predictors into a strong predictor by training predictors sequantially, each trying to correct its predessor. Gradient boosting tries fitting a new predictor to the residual errors made by the previous predictor. 
 
+```python
+# first model works on original dataset
+Model1=DecisionTreeRegressor(max_depth=6)
+Model1.fit(X_train, y_train)
+
+#second model tries to predict residuals of the first model
+Model2=DecisionTreeRegressor(max_depth=6)
+M1_residuals=y_train-Model1.predict(X_train)
+Model2.fit(X_train, M1_residuals)
+
+#third model tries to predict residuals of second model
+Model3=DecisionTreeRegressor(max_depth=6)
+M2_residuals=M1_residuals-Model2.predict(X_train)
+Model3.fit(X_train, M2_residuals)
+
+#make prediction using all models in ensemble
+y_pred=Model1.predict(X_test)+Model2.predict(X_test)+Model3.predict(X_test)
+GB_MSE=mean_squared_error(y_pred,y_test)
+print(GB_MSE)
+0.027
+
+```
+
+[Here](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html) is scikit API for regression gradient boosting.  
+
+```python
+from sklearn.ensemble import GradientBoostingRegressor
+
+X_train, X_test, y_train, y_test=train_test_split(X,y, test_size=0.1)
+
+GBModel=GradientBoostingRegressor(n_estimators=100, max_depth=6)
+GBModel.fit(X_train, y_train)
+y_pred=GBModel.predict(X_test)
+print(mean_squared_error(y_pred,y_test))
+0.006
+```
+In order to find the optimal number of models in our ensemble (paramater 'n_estimators'), we can use 'stages_predict()' method which returns y_pred for each sequential model.
+
+```python
+models_MSE=[mean_squared_error(y_test, y_pred) for y_pred in GBModel.staged_predict(X_test) ]
+plt.plot(models_MSE)
+plt.ylabel("MSE")
+plt.xlabel("model number")
+```
+![alt text](image-1.png)
+
+The plot shows that 20 can be a reasonable value for the number of moels in our Gradient Boosting ensemble. Insteam of scikit API, we can also use xgboost which provides an optimized implementation
+```python
+import xgboost
+XGModel=xgboost.XGBRegressor()
+X_train, X_test, y_train, y_test=train_test_split(X,y, test_size=0.1)
+XGModel.fit(X_train, y_train)
+y_pred=XGModel.predict(X_test)
+print(mean_squared_error(y_pred,y_test))
+```
