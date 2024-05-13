@@ -21,10 +21,6 @@ A dataset comprising 5000 random values within reasonable ranges for these facto
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.tree import DecisionTreeRegressor, plot_tree
-from sklearn.metrics import mean_squared_error
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split
 
 # read required columns from the dataset  
 Data=pd.read_csv(r"data/1YearStorage.out", delim_whitespace=True, usecols=['K', 'Inj', 'Por', 'b', 'CHD', 'Ext', 'DSP','REN_3_2'])
@@ -36,23 +32,16 @@ Data.info()
 
 ### Data Cleaning and Preparation
 There is no missing data and all features and target are continuous. So, no data processsing is needed to handle missing data or categorical features. One of the many quality of Decision Trees is that they do not need much data preparation like feature scaling at all. We just need to make a new feature as the ratio of extraction to injection rate. 
-
-DELETEME:Also, we ned to normalize/scale the features to transform the values of them to a common scale, making them comparable and preventing features with larger values from dominating the model training process. We use "Min-Max scaling" method for normalization, which makes all features to be in the range of 0 to 1. 
+ 
 
 ```python
 # perform feature engineering by making a new feature as ratio of extraction rate to injection rate
 Data["EXT_Inj"]=Data['Ext']/Data["Inj"]
 
-# save features and target in X and y variabes after Convert REN values to percentage
+# save features and target in X and y variabes
 X= Data.loc[:,['K', 'Inj', 'Por', 'b', 'CHD', "EXT_Inj", 'DSP']]
-y= 100 * Data.loc[:,"REN_3_2"]
-
-#DELETEME apply min-max transformation 
-for feature in X.columns:
-    feature_min, feature_max=X[feature].min(),X[feature].max()
-    X[feature]=(X[feature]-feature_min)/(feature_max-feature_min)
+y= Data.loc[:,"REN_3_2"]
 ```
-
 Now, we can begin our ML journey.
 
 ## Decision Tree (DT)
@@ -61,6 +50,11 @@ DTs are the fundamental components of Random Forests (RF) and other ensembel met
 DTs are nonparametric models because the number of its parameters is not determined prior to training (unlike a parametric model like linear regression which assumes the target variable is modeled as a linear combination of the features). If left unconstrained, DTs will adapt itself to the training data and provides an overfitted model. To avoid this, we need to restrict the DTs freedom during training. Below, we show an example in which we limiting the maximum depth of our DTs. By default, 'max_depth' is 'None' meaning nodes are expanded until all leaves are pure or until all leaves contain less than 'min_samples_split' samples.". Here, we also increases the 
 'min_samples_split' from default values of 2 to 10. 
 ```python
+from sklearn.tree import DecisionTreeRegressor, plot_tree
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import train_test_split
+
+
 def run_model(depth):
     X_train, X_test, y_train, y_test=train_test_split(X,y, test_size=0.1)
     DT_model=DecisionTreeRegressor(min_samples_split=10, max_depth=depth)
@@ -86,6 +80,8 @@ In addition to limiting the "max_depth", we can also control overfitting using o
 The start of MSE fluctuations is a sign of overfitting. Therefore, the best max_depth may be 6.
 
 ```python
+X_train, X_test, y_train, y_test=train_test_split(X,y, test_size=0.1)
+
 BestModel=DecisionTreeRegressor(max_depth=6)
 BestModel.fit(X,y)
 y_pred=BestModel.predict(X_test)
@@ -121,8 +117,6 @@ This method uses the same algorithm for all predictors but training them on diff
 
 ```python
 from sklearn.ensemble import BaggingRegressor
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.metrics import mean_squared_error
 
 X_train, X_test, y_train, y_test=train_test_split(X,y, test_size=0.1)
 
