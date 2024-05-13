@@ -165,7 +165,8 @@ FeatureImpoDF["Importance"]=RF_Model.feature_importances_
 FeatureImpoDF.sort_values(by=["Importance"],inplace=True, ascending=False)
 print(FeatureImpoDF)
 ```
-![alt text](image.png)
+![image](https://github.com/AliForghani/DecisionTreeEnsemble/assets/22843733/c687e931-cf89-4162-8c34-4eb89630fd2a)
+
 
 Results show that background groundwater grandient (CHD) and Hydraulic conductivity are the most important features for REN prediction. 
 
