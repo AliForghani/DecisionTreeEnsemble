@@ -87,6 +87,8 @@ In addition to limiting the "max_depth", we can also control overfitting using o
 The start of MSE fluctuations is a sign of overfitting. Therefore, the best max_depth may be 6.
 
 ```python
+X_train, X_test, y_train, y_test=train_test_split(X,y, test_size=0.1)
+
 BestModel=DecisionTreeRegressor(max_depth=6)
 BestModel.fit(X,y)
 y_pred=BestModel.predict(X_test)
