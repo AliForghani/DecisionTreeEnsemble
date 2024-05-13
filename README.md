@@ -217,7 +217,8 @@ plt.plot(models_MSE)
 plt.ylabel("MSE")
 plt.xlabel("model number")
 ```
-![alt text](image-1.png)
+![image](https://github.com/AliForghani/DecisionTreeEnsemble/assets/22843733/515d815c-fc1b-4c98-b034-78bd309dc696)
+
 
 The plot shows that 20 can be a reasonable value for the number of moels in our Gradient Boosting ensemble. Insteam of scikit API, we can also use xgboost which provides an optimized implementation
 ```python
