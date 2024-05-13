@@ -228,4 +228,5 @@ X_train, X_test, y_train, y_test=train_test_split(X,y, test_size=0.1)
 XGModel.fit(X_train, y_train)
 y_pred=XGModel.predict(X_test)
 print(mean_squared_error(y_pred,y_test))
+0.007
 ```
