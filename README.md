@@ -22,9 +22,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-from sklearn.metrics import mean_squared_error
-from sklearn.model_selection import train_test_split
-
 # read required columns from the dataset  
 Data=pd.read_csv(r"data/1YearStorage.out", delim_whitespace=True, usecols=['K', 'Inj', 'Por', 'b', 'CHD', 'Ext', 'DSP','REN_3_2'])
 
@@ -60,6 +57,11 @@ DTs are the fundamental components of Random Forests (RF) and other ensembel met
 DTs are nonparametric models because the number of its parameters is not determined prior to training (unlike a parametric model like linear regression which assumes the target variable is modeled as a linear combination of the features). If left unconstrained, DTs will adapt itself to the training data and provides an overfitted model. To avoid this, we need to restrict the DTs freedom during training. Below, we show an example in which we limiting the maximum depth of our DTs. By default, 'max_depth' is 'None' meaning nodes are expanded until all leaves are pure or until all leaves contain less than 'min_samples_split' samples.". Here, we also increases the 
 'min_samples_split' from default values of 2 to 10. 
 ```python
+from sklearn.tree import DecisionTreeRegressor, plot_tree
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import train_test_split
+
+
 def run_model(depth):
     X_train, X_test, y_train, y_test=train_test_split(X,y, test_size=0.1)
     DT_model=DecisionTreeRegressor(min_samples_split=10, max_depth=depth)
@@ -85,8 +87,6 @@ In addition to limiting the "max_depth", we can also control overfitting using o
 The start of MSE fluctuations is a sign of overfitting. Therefore, the best max_depth may be 6.
 
 ```python
-from sklearn.tree import DecisionTreeRegressor, plot_tree
-
 BestModel=DecisionTreeRegressor(max_depth=6)
 BestModel.fit(X,y)
 y_pred=BestModel.predict(X_test)
@@ -122,8 +122,6 @@ This method uses the same algorithm for all predictors but training them on diff
 
 ```python
 from sklearn.ensemble import BaggingRegressor
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.metrics import mean_squared_error
 
 X_train, X_test, y_train, y_test=train_test_split(X,y, test_size=0.1)
 
