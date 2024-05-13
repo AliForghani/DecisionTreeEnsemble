@@ -41,7 +41,7 @@ Data["EXT_Inj"]=Data['Ext']/Data["Inj"]
 
 # save features and target in X and y variabes after Convert REN values to percentage
 X= Data.loc[:,['K', 'Inj', 'Por', 'b', 'CHD', "EXT_Inj", 'DSP']]
-y= 100 * Data.loc[:,"REN_3_2"]
+y= Data.loc[:,"REN_3_2"]
 
 #DELETEME apply min-max transformation 
 for feature in X.columns:
