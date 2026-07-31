@@ -76,7 +76,6 @@ MSESummaryDF.plot(x="max_depth", y="MSE", kind='line', marker='o', ylabel='MSE')
 ![image](https://github.com/AliForghani/DecisionTreeEnsemble/assets/22843733/ee1e6c3f-47f0-43d3-8ea5-929a1af33200)
 
 
-In addition to limiting the "max_depth", we can also control overfitting using other parameters. This includes 
 The start of MSE fluctuations is a sign of overfitting. Therefore, the best max_depth may be 6.
 
 ```python
