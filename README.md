@@ -21,4 +21,4 @@ Predict Recovery Effectiveness (REN), the fraction of injected water recoverable
 All explanations, code, and plots are in [ML_Ensemble.ipynb](ML_Ensemble.ipynb).
 
 ## Reference
-Dataset from: [Afshari Nia et al. (2018), Journal of Hydrology](https://www.sciencedirect.com/science/article/abs/pii/S0022169418304645)
+Dataset from: [Forghani and Peralta (2018), Journal of Hydrology](https://www.sciencedirect.com/science/article/abs/pii/S0022169418304645)
