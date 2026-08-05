@@ -1,0 +1,6 @@
+numpy==2.2.5
+pandas==2.3.3
+scikit-learn==1.7.2
+xgboost==2.1.4   # xgboost>=3.0 breaks shap.TreeExplainer (base_score format change)
+shap==0.49.1
+matplotlib==3.10.9
